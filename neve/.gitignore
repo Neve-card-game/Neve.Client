@@ -88,6 +88,7 @@ crashlytics-build.properties
 *.so
 *.dylib
 *.dll
+!/Assets/Plugins/**
 
 # Fortran module files
 *.mod
