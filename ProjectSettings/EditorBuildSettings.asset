@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/GameMain.unity
+    guid: a3588cb92324ef44eb4071c09691b7da
+  - enabled: 1
+    path: Assets/Scenes/CardCollection.unity
+    guid: 7c53a99d487107b4390b7a501b447309
+  - enabled: 1
+    path: Assets/Scenes/LoginMenu.unity
+    guid: 05ac64da4bf45ef4abd0d7ff2c082cb3
+  m_configObjects: {}
