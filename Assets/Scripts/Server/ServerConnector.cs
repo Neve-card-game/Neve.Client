@@ -24,76 +24,81 @@ public class ServerConnector : MonoBehaviour
 
     public Player Loginplayer;
 
-   
-    
+
+
     public async Task Awake()
     {
         await connector.InitAsync();
-        Registerbutton.onClick.AddListener(async ()=> await RegisterAsync());
-        Loginbutton.onClick.AddListener(async ()=> await LoginAsync());
-        
+        Registerbutton.onClick.AddListener(async () => await RegisterAsync());
+        Loginbutton.onClick.AddListener(async () => await LoginAsync());
+
 
     }
 
-   
+
     public async Task RegisterAsync()
     {
-        affirmtext.text = "检测中";
+        affirmtext.text = "registering...";
         if (email.text == null && password.text == null && username.text == null)
         {
-            affirmtext.text = "填写字段不可为空！";
+            affirmtext.text = "please fill in all the fields";
         }
         else if (!email.text.Contains("@") || !email.text.Contains(".com"))
         {
-            affirmtext.text = "请填写正确的邮箱！";
+            affirmtext.text = "please enter a valid email";
         }
         else if (await connector.EmailExist(email.text))
         {
-            affirmtext.text = "邮箱已经被注册！";
-        }
-        else {
-
-            try
-            {
-                affirmtext.text = "注册中";
-                await connector.Register(email.text, password.text, username.text);
-                affirmtext.text = "注册成功";
-            }
-            catch
-            {
-                affirmtext.text = "注册失败";
-            }
-        }
-    }
-
-    public async Task LoginAsync()
-    {
-        affirmtext.text = "检测中";
-        if (emailVerified.text == null && passwordVerified.text == null)
-        {
-            affirmtext.text = "填写字段不可为空！";
-        }
-        else if (!emailVerified.text.Contains("@") || !emailVerified.text.Contains(".com"))
-        {
-            affirmtext.text = "请填写正确的邮箱！";
-        }
-        else if (!await connector.PasswordCheck(emailVerified.text,passwordVerified.text))
-        {
-            affirmtext.text = "密码输入错误或者用户不存在";
+            affirmtext.text = "email already exists";
         }
         else
         {
 
             try
             {
-                affirmtext.text = "登陆中";
-                await connector.Login(emailVerified.text,passwordVerified.text);
-                affirmtext.text = "登陆成功";
+                affirmtext.text = "registering...";
+                await connector.Register(email.text, password.text, username.text);
+                affirmtext.text = "register success";
+            }
+            catch
+            {
+                affirmtext.text = "register failed";
+            }
+        }
+    }
+
+    public async Task LoginAsync()
+    {
+        affirmtext.text = "logging in...";
+        if (emailVerified.text == null && passwordVerified.text == null)
+        {
+            affirmtext.text = "please fill in all the fields";
+        }
+        else if (!emailVerified.text.Contains("@") || !emailVerified.text.Contains(".com"))
+        {
+            affirmtext.text = "please enter a valid email";
+        }
+        else if (!await connector.EmailExist(email.text))
+        {
+            affirmtext.text = "account does not exist. please register first";
+        }
+        if (!await connector.PasswordCheck(emailVerified.text, passwordVerified.text))
+        {
+            affirmtext.text = "password is incorrect";
+        }
+        else
+        {
+
+            try
+            {
+                affirmtext.text = "logging in...";
+                await connector.Login(emailVerified.text, passwordVerified.text);
+                affirmtext.text = "login success";
                 await LoadMain();
             }
             catch
             {
-                affirmtext.text = "登陆失败";
+                affirmtext.text = "login failed";
             }
         }
     }
@@ -104,20 +109,20 @@ public class ServerConnector : MonoBehaviour
         {
             string[] decklist = await connector.LoadDeckList(Loginplayer.Email);
             Loginplayer.UsingDeckId = Convert.ToInt32(decklist[0]);
-            if(decklist[1] == null)
+            if (decklist[1] == null)
             {
-              
+
             }
             else
             {
-              Loginplayer.PlayerDecks = JsonConvert.DeserializeObject(decklist[1], typeof(List<Decks>)) as List<Decks>;
+                Loginplayer.PlayerDecks = JsonConvert.DeserializeObject(decklist[1], typeof(List<Decks>)) as List<Decks>;
             }
-           
+
             return Loginplayer;
         }
         else
         {
-            Debug.LogError("未链接");
+            Debug.LogError("login failed");
             return null;
         }
     }
@@ -126,26 +131,26 @@ public class ServerConnector : MonoBehaviour
     {
         if (await connector.LoginCheck(Loginplayer.Email))
         {
-           return await connector.UpDataDeckList(player.Email,JsonConvert.SerializeObject(player.PlayerDecks),player.UsingDeckId);
+            return await connector.UpDataDeckList(player.Email, JsonConvert.SerializeObject(player.PlayerDecks), player.UsingDeckId);
         }
         else
         {
-           return false;
+            return false;
         }
     }
     private async Task LoadMain()
     {
         if (await connector.LoginCheck(emailVerified.text))
         {
-            
-            Loginplayer =  new Player( await connector.GetPlayer(emailVerified.text));
+
+            Loginplayer = new Player(await connector.GetPlayer(emailVerified.text));
             Loginplayer.LoginStatus = await connector.LoginCheck(Loginplayer.Email);
 
             SceneManager.LoadSceneAsync(3);
-            
+
         }
 
     }
 
-    
+
 }

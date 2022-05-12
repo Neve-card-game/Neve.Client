@@ -12,8 +12,8 @@ public class DeckEditor : MonoBehaviour, IPointerClickHandler
     public delegate void OnClickDeckEdit(string DeckName);
     public static event OnClickDeckEdit EditOnClick;
 
-    public delegate void OnClickDeckDelet(string DeckName);
-    public static event OnClickDeckDelet DeletOnClick;
+    public delegate void OnClickDeckDelete(string DeckName);
+    public static event OnClickDeckDelete DeleteOnClick;
 
     public DeckBuilder deckBuilder;
 
@@ -32,9 +32,9 @@ public class DeckEditor : MonoBehaviour, IPointerClickHandler
         EditOnClick(this.name);
     }
 
-    public void DeletButtonOnClick()
+    public void DeleteButtonOnClick()
     {
-        DeletOnClick(this.name);
+        DeleteOnClick(this.name);
     }
 
 }

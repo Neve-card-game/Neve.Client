@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FULLScreen : MonoBehaviour
+public class FullScreen : MonoBehaviour
 {
     Toggle toggle;
     private void Start()
     {
-         toggle= FindObjectOfType<Toggle>();
+        toggle = FindObjectOfType<Toggle>();
     }
 
-   
-   private void SetUnFullScreen()
+
+    private void SetUnFullScreen()
     {
         Screen.fullScreen = false;
     }
 
-    private  void SetFullScreen()
+    private void SetFullScreen()
     {
         Screen.SetResolution(1920, 1080, true);
         Screen.fullScreen = true;
@@ -27,12 +27,12 @@ public class FULLScreen : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            Debug.Log("开启全屏");
+            Debug.Log("start full screen");
             SetFullScreen();
         }
         else
         {
-            Debug.Log("关闭全屏");
+            Debug.Log("stop full screen");
             SetUnFullScreen();
         }
     }

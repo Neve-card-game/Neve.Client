@@ -14,20 +14,20 @@ public class ScreenChange : MonoBehaviour
 
     public void ScreenSet()
     {
-       if(string.Equals(dropdown.captionText.text , "1920*1080"))
+        if (string.Equals(dropdown.captionText.text, "1920*1080"))
         {
-            Screen.SetResolution(1920,1080,Screen.fullScreen);
-            Debug.Log("分辨率变为" + dropdown.captionText.text);
+            Screen.SetResolution(1920, 1080, Screen.fullScreen);
+            Debug.Log("Resolution changed to" + dropdown.captionText.text);
         }
-       else if(string.Equals(dropdown.captionText.text , "1280*720"))
+        else if (string.Equals(dropdown.captionText.text, "1280*720"))
         {
-            Screen.SetResolution(1280,720,Screen.fullScreen);
-            Debug.Log("分辨率变为" + dropdown.captionText.text);
+            Screen.SetResolution(1280, 720, Screen.fullScreen);
+            Debug.Log("Resolution changed to" + dropdown.captionText.text);
         }
-       else if(string.Equals(dropdown.captionText.text , "800*600"))
+        else if (string.Equals(dropdown.captionText.text, "800*600"))
         {
-            Screen.SetResolution(800, 600,Screen.fullScreen);
-            Debug.Log("分辨率变为" + dropdown.captionText.text);
+            Screen.SetResolution(800, 600, Screen.fullScreen);
+            Debug.Log("Resolution changed to" + dropdown.captionText.text);
         }
     }
 }

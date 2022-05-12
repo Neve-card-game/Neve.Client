@@ -13,7 +13,7 @@ public class BackMenu : MonoBehaviour
 
     public float transitionTime = 1.0f;
 
-    
+
 
     void Start()
     {
@@ -35,7 +35,5 @@ public class BackMenu : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         SceneManager.LoadSceneAsync(index);
-        
-
     }
 }

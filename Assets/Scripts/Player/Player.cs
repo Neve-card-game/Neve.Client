@@ -15,7 +15,7 @@ public class Player : User
     {
 
     }
-    
+
     public Player(User user)
     {
         this.id = user.id;
@@ -27,6 +27,6 @@ public class Player : User
         this.Status = user.Status;
     }
 
-    
-    
+
+
 }

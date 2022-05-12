@@ -19,29 +19,29 @@ public class SignalRConnector
         }
         catch (Exception ex)
         {
-            UnityEngine.Debug.Log("¡¥Ω” ß∞‹"+ex);
+            UnityEngine.Debug.Log("start failed" + ex);
         }
     }
 
-    public async Task Register(string email,string password,string username)
+    public async Task Register(string email, string password, string username)
     {
         try
         {
-            await connection.InvokeAsync("Register",email,password,username);
+            await connection.InvokeAsync("Register", email, password, username);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.Log(ex);
         }
     }
 
-    public async Task Login(string email,string password)
+    public async Task Login(string email, string password)
     {
         try
         {
-            await connection.InvokeAsync("Login",email, password);
+            await connection.InvokeAsync("Login", email, password);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.Log(ex);
         }
@@ -51,7 +51,7 @@ public class SignalRConnector
     {
         try
         {
-           return await connection.InvokeAsync<bool>("Eamilexist", email);
+            return await connection.InvokeAsync<bool>("Emailexist", email);
         }
         catch (Exception ex)
         {
@@ -64,7 +64,7 @@ public class SignalRConnector
     {
         try
         {
-            return await connection.InvokeAsync<bool>("CheckPassword", email,password);
+            return await connection.InvokeAsync<bool>("CheckPassword", email, password);
         }
         catch (Exception ex)
         {
@@ -105,20 +105,20 @@ public class SignalRConnector
         {
             return await connection.InvokeAsync<string[]>("LoadDeckList", email);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError(ex);
             return null;
         }
     }
 
-    public async Task<bool> UpDataDeckList(string email,string decklist,int deckid)
+    public async Task<bool> UpDataDeckList(string email, string decklist, int deckid)
     {
         try
         {
-            return await connection.InvokeAsync<bool>("SaveDeckList",email,decklist,deckid);
+            return await connection.InvokeAsync<bool>("SaveDeckList", email, decklist, deckid);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogError(e);
             return false;

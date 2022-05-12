@@ -18,31 +18,31 @@ public class CardEnlage : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         Vector2 Size = this.GetComponent<RectTransform>().sizeDelta;
 
-        GameObject CardInlage = new GameObject(this.name + "Max", typeof(Image), typeof(CanvasGroup));
+        GameObject CardInlarge = new GameObject(this.name + "Max", typeof(Image), typeof(CanvasGroup));
 
-        CardInlage.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        CardInlarge.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
-        CardInlage.transform.SetParent(GameObject.FindGameObjectWithTag("View Area").transform);
+        CardInlarge.transform.SetParent(GameObject.FindGameObjectWithTag("View Area").transform);
 
-        CardInlage.GetComponent<Image>().sprite = this.GetComponent<Image>().sprite;
+        CardInlarge.GetComponent<Image>().sprite = this.GetComponent<Image>().sprite;
 
         if (eventData.position.y >= 660f)
         {
 
-            CardInlage.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y - 200f * canvas.scaleFactor, this.transform.position.z);
+            CardInlarge.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y - 200f * canvas.scaleFactor, this.transform.position.z);
         }
         else if (eventData.position.y < 660f && eventData.position.y >= 300f)
         {
 
-            CardInlage.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y, this.transform.position.z);
+            CardInlarge.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y, this.transform.position.z);
         }
         else if (eventData.position.y < 300f)
         {
 
-            CardInlage.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y + 225f * canvas.scaleFactor, this.transform.position.z);
+            CardInlarge.transform.position = new Vector3(this.transform.position.x + 200f * canvas.scaleFactor, this.transform.position.y + 225f * canvas.scaleFactor, this.transform.position.z);
         }
 
-        CardInlage.GetComponent<RectTransform>().sizeDelta = new Vector2(Size.x * 2 * canvas.scaleFactor, Size.y * 2 * canvas.scaleFactor);
+        CardInlarge.GetComponent<RectTransform>().sizeDelta = new Vector2(Size.x * 2 * canvas.scaleFactor, Size.y * 2 * canvas.scaleFactor);
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -11,7 +11,7 @@ public class DeckBuilder : MonoBehaviour
     private ServerConnector decklistSl;
     private CardDataBase CardData;
 
-    public List<Decks> Mydeck = new List<Decks>();
+    public List<Decks> MyDeck = new List<Decks>();
 
     public Decks CurrentEditDeck = new Decks(null, null);
 
@@ -26,23 +26,23 @@ public class DeckBuilder : MonoBehaviour
     public bool IsCardListDispaly = false;
     public bool IsDeckEdit = false;
     public bool IsLayoutChange = false;
-    public bool IsDeakRepeatName = false;
+    public bool IsDeckRepeatName = false;
 
     void OnEnable()
     {
         CardEnlage.OnClick += OnClickHandler;
         DeckEditor.DeckOnClick += DeckOnClickHandler;
         DeckEditor.EditOnClick += DeckEdit;
-        DeckEditor.DeletOnClick += DeletDeck;
-        CardListEditor.CardOnClick += CardListDelet;
+        DeckEditor.DeleteOnClick += DeleteDeck;
+        CardListEditor.CardOnClick += CardListDelete;
     }
     void OnDisable()
     {
         CardEnlage.OnClick -= OnClickHandler;
         DeckEditor.DeckOnClick -= DeckOnClickHandler;
         DeckEditor.EditOnClick -= DeckEdit;
-        DeckEditor.DeletOnClick -= DeletDeck;
-        CardListEditor.CardOnClick -= CardListDelet;
+        DeckEditor.DeleteOnClick -= DeleteDeck;
+        CardListEditor.CardOnClick -= CardListDelete;
     }
     private async void Start()
     {
@@ -55,12 +55,12 @@ public class DeckBuilder : MonoBehaviour
         if (decklistSl.LoadDeckList() != null)
         {
             Player player = await decklistSl.LoadDeckList();
-            Mydeck = player.PlayerDecks;
-            IsrepeatNameInDeckList();
+            MyDeck = player.PlayerDecks;
+            IsRepeatNameInDeckList();
             DeckSelectReset();
         }
 
-        foreach (var deck in Mydeck)
+        foreach (var deck in MyDeck)
         {
 
             DeckListDisplay(deck);
@@ -69,49 +69,49 @@ public class DeckBuilder : MonoBehaviour
 
     void DeckSelectReset()
     {
-        foreach (var deck in Mydeck)
+        foreach (var deck in MyDeck)
         {
             deck.IsDeckOnClick = false;
         }
     }
-    void IsRepectName(string DeckName)
+    void IsRepeatName(string DeckName)
     {
         bool i = true;
 
-        foreach (var deck in Mydeck)
+        foreach (var deck in MyDeck)
         {
             if (deck.DeckName == DeckName)
             {
-                IsDeakRepeatName = true;
+                IsDeckRepeatName = true;
                 i = false;
             }
         }
         if (i)
         {
-            IsDeakRepeatName = false;
+            IsDeckRepeatName = false;
         }
     }
-    void IsrepeatNameInDeckList()
+    void IsRepeatNameInDeckList()
     {
-        int counts = Mydeck.Count;
+        int counts = MyDeck.Count;
         for (int i = 0; i < counts; i++)
         {
             for (int j = i + 1; j < counts; j++)
             {
-                if (Mydeck[i].DeckName == Mydeck[j].DeckName)
+                if (MyDeck[i].DeckName == MyDeck[j].DeckName)
                 {
-                    if (Mydeck[i].EditTime >= Mydeck[j].EditTime)
+                    if (MyDeck[i].EditTime >= MyDeck[j].EditTime)
                     {
-                        Mydeck.RemoveAt(j);
-                        counts = Mydeck.Count;
+                        MyDeck.RemoveAt(j);
+                        counts = MyDeck.Count;
                         i--;
                         break;
 
                     }
                     else
                     {
-                        Mydeck.RemoveAt(i);
-                        counts = Mydeck.Count;
+                        MyDeck.RemoveAt(i);
+                        counts = MyDeck.Count;
                         i--;
                         break;
                     }
@@ -120,36 +120,36 @@ public class DeckBuilder : MonoBehaviour
         }
 
     }
-    void DeckListDisplay(Decks mydeck)
+    void DeckListDisplay(Decks MyDeck)
     {
         try
         {
             GameObject Deck = Instantiate(Decks);
-            Deck.GetComponentInChildren<Text>().text = mydeck.DeckName;
-            if (mydeck.IsDeckOnClick == false)
+            Deck.GetComponentInChildren<Text>().text = MyDeck.DeckName;
+            if (MyDeck.IsDeckOnClick == false)
             {
-                if (mydeck.DeckColor == "红")
+                if (MyDeck.DeckColor == "红")
                 {
                     Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(200 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
                 }
-                else if (mydeck.DeckColor == "蓝")
+                else if (MyDeck.DeckColor == "蓝")
                 {
                     Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 156 / 255f, 100 / 255f);
                 }
             }
             else
             {
-                if (mydeck.DeckColor == "红")
+                if (MyDeck.DeckColor == "红")
                 {
                     Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(255 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
 
                 }
-                else if (mydeck.DeckColor == "蓝")
+                else if (MyDeck.DeckColor == "蓝")
                 {
                     Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 255 / 255f, 100 / 255f);
                 }
             }
-            Deck.name = mydeck.DeckName;
+            Deck.name = MyDeck.DeckName;
             Deck.transform.SetParent(DeckList_Layout.transform);
         }
         catch
@@ -158,28 +158,28 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    void SetDeckColor(Decks mydeck)
+    void SetDeckColor(Decks MyDeck)
     {
-        GameObject Deck = DeckList_Layout.transform.Find(mydeck.DeckName).gameObject;
-        if (mydeck.IsDeckOnClick == false)
+        GameObject Deck = DeckList_Layout.transform.Find(MyDeck.DeckName).gameObject;
+        if (MyDeck.IsDeckOnClick == false)
         {
-            if (mydeck.DeckColor == "红")
+            if (MyDeck.DeckColor == "红")
             {
                 Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(200 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
             }
-            else if (mydeck.DeckColor == "蓝")
+            else if (MyDeck.DeckColor == "蓝")
             {
                 Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 156 / 255f, 100 / 255f);
             }
         }
         else
         {
-            if (mydeck.DeckColor == "红")
+            if (MyDeck.DeckColor == "红")
             {
                 Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(255 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
 
             }
-            else if (mydeck.DeckColor == "蓝")
+            else if (MyDeck.DeckColor == "蓝")
             {
                 Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 255 / 255f, 100 / 255f);
             }
@@ -194,7 +194,7 @@ public class DeckBuilder : MonoBehaviour
     void DeckListRefresh()
     {
         DeckListHide();
-        foreach (var deck in Mydeck)
+        foreach (var deck in MyDeck)
         {
             DeckListDisplay(deck);
         }
@@ -204,7 +204,7 @@ public class DeckBuilder : MonoBehaviour
     {
         if (IsDeckEdit == false)
         {
-            foreach (var deck in Mydeck)
+            foreach (var deck in MyDeck)
             {
                 if (DeckName == deck.DeckName)
                 {
@@ -221,15 +221,15 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    async void DeletDeck(string DeckName)
+    async void DeleteDeck(string DeckName)
     {
-        for (int i = 0; i < Mydeck.Count; i++)
+        for (int i = 0; i < MyDeck.Count; i++)
         {
-            if (Mydeck[i].DeckName == DeckName)
+            if (MyDeck[i].DeckName == DeckName)
             {
-                Mydeck.RemoveAt(i);
-                decklistSl.Loginplayer.PlayerDecks = Mydeck;
-                if(await decklistSl.SaveDeckList(decklistSl.Loginplayer))
+                MyDeck.RemoveAt(i);
+                decklistSl.Loginplayer.PlayerDecks = MyDeck;
+                if (await decklistSl.SaveDeckList(decklistSl.Loginplayer))
                 {
                     Debug.Log("储存成功");
                 }
@@ -243,13 +243,13 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    void CardListDisplay(Decks mydeck)
+    void CardListDisplay(Decks MyDeck)
     {
-        GameObject.FindGameObjectWithTag("DeckTitle").GetComponent<Text>().text = mydeck.DeckName;
+        GameObject.FindGameObjectWithTag("DeckTitle").GetComponent<Text>().text = MyDeck.DeckName;
 
         if (IsCardListDispaly == false)
         {
-            foreach (var card in mydeck.Deck)
+            foreach (var card in MyDeck.Deck)
             {
 
                 GameObject cardindeck = Instantiate(CardList);
@@ -261,7 +261,7 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    void CardListHide(Decks mydeck)
+    void CardListHide(Decks MyDeck)
     {
         DeckList_Layout.transform.DestroyChildren();
         GameObject.FindGameObjectWithTag("DeckTitle").GetComponent<Text>().text = "你的卡组";
@@ -276,9 +276,9 @@ public class DeckBuilder : MonoBehaviour
             string DeckName = GameObject.FindGameObjectWithTag("DeckName").GetComponent<Text>().text;
             string DeckColor = GameObject.FindGameObjectWithTag("DeckColor").GetComponent<Text>().text;
 
-            IsRepectName(DeckName);
+            IsRepeatName(DeckName);
 
-            if (IsDeakRepeatName == false)
+            if (IsDeckRepeatName == false)
             {
                 CurrentEditDeck.DecksClear();
                 CurrentEditDeck.DeckName = DeckName;
@@ -297,7 +297,7 @@ public class DeckBuilder : MonoBehaviour
         }
     }
 
-    public void CardListDelet(PointerEventData eventData)
+    public void CardListDelete(PointerEventData eventData)
     {
         foreach (var card in CurrentEditDeck.Deck)
         {
@@ -317,9 +317,9 @@ public class DeckBuilder : MonoBehaviour
         {
             CardListHide(CurrentEditDeck);
             Decks decks = new Decks(CurrentEditDeck.DeckName, CurrentEditDeck.DeckId, CurrentEditDeck.DeckColor, CurrentEditDeck.Deck, CurrentEditDeck.CardsConuts, CurrentEditDeck.IsDeckOnClick, CurrentEditDeck.EditTime);
-            Mydeck.Add(decks);
-            IsrepeatNameInDeckList();
-            decklistSl.Loginplayer.PlayerDecks = Mydeck;
+            MyDeck.Add(decks);
+            IsRepeatNameInDeckList();
+            decklistSl.Loginplayer.PlayerDecks = MyDeck;
             if (await decklistSl.SaveDeckList(decklistSl.Loginplayer))
             {
                 Debug.Log("储存成功");
@@ -356,7 +356,7 @@ public class DeckBuilder : MonoBehaviour
     void DeckOnClickHandler(PointerEventData eventData)
     {
 
-        foreach (var deck in Mydeck)
+        foreach (var deck in MyDeck)
         {
             if (deck.DeckName == eventData.pointerClick.name)
             {

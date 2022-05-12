@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
     public AnimationCurve showCurve;
     public AnimationCurve hideCurve;
 
-    public float animatioSpeed;
+    public float animationSpeed;
 
     private bool IsPanelShow;
 
@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
         while (timer <= 1)
         {
             gameObject.transform.localScale = Vector3.one * showCurve.Evaluate(timer);
-            timer += Time.deltaTime * animatioSpeed;
+            timer += Time.deltaTime * animationSpeed;
             yield return null;
         }
     }
@@ -35,7 +35,7 @@ public class MainMenu : MonoBehaviour
         while (timer <= 1)
         {
             gameObject.transform.localScale = Vector3.one * hideCurve.Evaluate(timer);
-            timer += Time.deltaTime * animatioSpeed;
+            timer += Time.deltaTime * animationSpeed;
             yield return null;
 
         }
@@ -60,6 +60,3 @@ public class MainMenu : MonoBehaviour
 
     }
 }
-
-
-
