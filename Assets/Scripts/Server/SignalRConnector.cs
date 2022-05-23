@@ -1,3 +1,4 @@
+using System.Data;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -5,10 +6,22 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 public class SignalRConnector
 {
-    private HubConnection connection = new HubConnectionBuilder().WithUrl("https://localhost:7207/nevehub").Build();
+    private HubConnection connection = new HubConnectionBuilder()
+        .WithUrl("https://localhost:7207/nevehub")
+        .Build();
+    
+
     public async Task InitAsync()
     {
+        
         await StartConnectionAsync();
+        Debug.Log("Connected");
+        connection.On<string,string>("ReceiveMessage",(user,message)=>{
+            var newMessage = $"{user}:{message}";
+            Debug.Log(newMessage);
+        });
+        await connection.InvokeAsync("SendMessage","aaa","bbb");
+        
     }
 
     public async Task StartConnectionAsync()
@@ -122,6 +135,18 @@ public class SignalRConnector
         {
             Debug.LogError(e);
             return false;
+        }
+    }
+
+    public async Task SendMessage(string userName, string Message)
+    {
+        try
+        {
+            await connection.InvokeAsync("SendMessage", userName, Message);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 

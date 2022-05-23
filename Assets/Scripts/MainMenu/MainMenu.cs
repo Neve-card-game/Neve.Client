@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
     public AnimationCurve showCurve;
     public AnimationCurve hideCurve;
 
-    public float animationSpeed;
+    public float animationSpeed = 3f;
 
     private bool IsPanelShow;
 

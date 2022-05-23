@@ -10,22 +10,16 @@ public class StartButton : MonoBehaviour
     
 
     public Button button_CardCollection;
+    public Button button_MatchUp;
     
     public Animator transition;
 
     public float transitionTime = 1.0f;
 
-    private AsyncOperation load;
-
-    public bool IsSceneLoad = false;
-
-    
-
-    void Awake()
+    void Start()
     {
-        LoadCardCollection();
-        StartCoroutine(buttoncheck());
-        
+        button_MatchUp.onClick.AddListener(LoadGame);
+        button_CardCollection.onClick.AddListener(LoadCardCollection);
     }
 
 
@@ -33,50 +27,28 @@ public class StartButton : MonoBehaviour
     {
         transition.SetBool("FadeIn", false);
         transition.SetBool("Fadeout", true);
-        StartCoroutine(LoadScene(1));
+        StartCoroutine(LoadScene(4));
+        
     }
 
     private void LoadCardCollection()
     {
-        
+        transition.SetBool("FadeIn", false);
+        transition.SetBool("Fadeout", true);
         StartCoroutine(LoadScene(2));
     }
 
     IEnumerator LoadScene(int index)
     {
-        
 
         yield return new WaitForSeconds(transitionTime);
 
-        load = SceneManager.LoadSceneAsync(index);
-
-        load.allowSceneActivation = false;
-
-        IsSceneLoad = true;
-    }
-
-    private void LoadCollection()
-    {
-        transition.SetBool("FadeIn", true);
-        transition.SetBool("Fadeout", false);
-        
-        load.allowSceneActivation = true;
+        SceneManager.LoadSceneAsync(index);
 
         transition.SetBool("FadeIn", false);
         transition.SetBool("Fadeout", true);
 
     }
 
-    IEnumerator buttoncheck()
-    {
-        while (true)
-        {
-            yield return new WaitForFixedUpdate();
-            if (IsSceneLoad)
-            {
-                
-                button_CardCollection.onClick.AddListener(LoadCollection);
-            }
-        }
-    }
+    
 }

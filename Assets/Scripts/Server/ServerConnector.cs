@@ -10,6 +10,7 @@ public class ServerConnector : MonoBehaviour
 {
     public Button Registerbutton;
     public Button Loginbutton;
+
     private SignalRConnector connector = new SignalRConnector();
     public InputField email;
     public InputField password;
@@ -29,6 +30,10 @@ public class ServerConnector : MonoBehaviour
     public async Task Awake()
     {
         await connector.InitAsync();
+
+        
+
+
         Registerbutton.onClick.AddListener(async () => await RegisterAsync());
         Loginbutton.onClick.AddListener(async () => await LoginAsync());
 
@@ -39,7 +44,7 @@ public class ServerConnector : MonoBehaviour
     public async Task RegisterAsync()
     {
         affirmtext.text = "registering...";
-        if (email.text == null && password.text == null && username.text == null)
+        if (email.text == null || password.text == null || username.text == null)
         {
             affirmtext.text = "please fill in all the fields";
         }
@@ -70,7 +75,7 @@ public class ServerConnector : MonoBehaviour
     public async Task LoginAsync()
     {
         affirmtext.text = "logging in...";
-        if (emailVerified.text == null && passwordVerified.text == null)
+        if (emailVerified.text == null || passwordVerified.text == null)
         {
             affirmtext.text = "please fill in all the fields";
         }
@@ -78,11 +83,11 @@ public class ServerConnector : MonoBehaviour
         {
             affirmtext.text = "please enter a valid email";
         }
-        else if (!await connector.EmailExist(email.text))
+        else if (!await connector.EmailExist(emailVerified.text))
         {
             affirmtext.text = "account does not exist. please register first";
         }
-        if (!await connector.PasswordCheck(emailVerified.text, passwordVerified.text))
+        else if (!await connector.PasswordCheck(emailVerified.text, passwordVerified.text))
         {
             affirmtext.text = "password is incorrect";
         }
@@ -138,6 +143,7 @@ public class ServerConnector : MonoBehaviour
             return false;
         }
     }
+
     private async Task LoadMain()
     {
         if (await connector.LoginCheck(emailVerified.text))
