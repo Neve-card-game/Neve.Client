@@ -9,19 +9,20 @@ public class SignalRConnector
     private HubConnection connection = new HubConnectionBuilder()
         .WithUrl("https://localhost:7207/nevehub")
         .Build();
-    
+    private string returnMessage = null;
+    private bool isReceive = false;
 
     public async Task InitAsync()
     {
-        
         await StartConnectionAsync();
-        Debug.Log("Connected");
-        connection.On<string,string>("ReceiveMessage",(user,message)=>{
-            var newMessage = $"{user}:{message}";
-            Debug.Log(newMessage);
-        });
-        await connection.InvokeAsync("SendMessage","aaa","bbb");
-        
+        connection.On<string>(
+            "ReceiveMessage",
+            (message) =>
+            {
+                returnMessage = message;
+                isReceive = true;
+            }
+        );
     }
 
     public async Task StartConnectionAsync()
@@ -150,4 +151,16 @@ public class SignalRConnector
         }
     }
 
+    public string ReceiveMessage()
+    {
+        if (isReceive)
+        {
+            isReceive = false;
+            return returnMessage;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

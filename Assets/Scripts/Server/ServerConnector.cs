@@ -31,9 +31,6 @@ public class ServerConnector : MonoBehaviour
     {
         await connector.InitAsync();
 
-        
-
-
         Registerbutton.onClick.AddListener(async () => await RegisterAsync());
         Loginbutton.onClick.AddListener(async () => await LoginAsync());
 
@@ -158,5 +155,12 @@ public class ServerConnector : MonoBehaviour
 
     }
 
+    public async Task SendMessage(string UserName,string Message){
+        await connector.SendMessage(UserName,Message);
+    }
+
+    public string ReceiveMessage(){
+        return connector.ReceiveMessage();
+    }
 
 }
