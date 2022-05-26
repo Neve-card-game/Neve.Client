@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class ExitGame : MonoBehaviour
 {
+    private ServerConnector connector;
+
+    private void Awake() {
+        connector = FindObjectOfType<ServerConnector>();
+    }
+    public void Disconnect(){
+        connector.Disconnect();
+    }
 
     public void Exit()
     {

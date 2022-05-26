@@ -1,8 +1,10 @@
+using System.Data.Common;
 using System.Data;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Collections.Generic;
 
 public class SignalRConnector
 {
@@ -23,6 +25,17 @@ public class SignalRConnector
                 isReceive = true;
             }
         );
+
+        connection.On<string>("Check", (message) => { });
+    }
+
+    public async Task DisconnectAsync(){
+        try{
+            await connection.StopAsync();
+        }
+        catch (Exception ex){
+            UnityEngine.Debug.Log("stop failed" + ex);
+        }
     }
 
     public async Task StartConnectionAsync()
@@ -163,4 +176,58 @@ public class SignalRConnector
             return null;
         }
     }
+
+    public async Task<bool> CreateRoom(string roomName, string roomPassword)
+    {
+        try
+        {
+            return await connection.InvokeAsync<bool>("CreateRoom", roomName, roomPassword);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            return false;
+        }
+    }
+
+    public async Task<bool> JoinRoom(string roomName, string roomPassword)
+    {
+        try
+        {
+            return await connection.InvokeAsync<bool>("AddToRoom", roomName, roomPassword);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            return false;
+        }
+    }
+
+    public async Task<bool> LeftRoom(string roomName)
+    {
+        try
+        {
+            return await connection.InvokeAsync<bool>("RemoveFromRoom", roomName);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            return false;
+        }
+    }
+
+    public async Task<List<Room>> GetRoomList()
+    {
+        try
+        {
+            return await connection.InvokeAsync<List<Room>>("GetRoomList");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            return null;
+        }
+    }
+
+  
 }

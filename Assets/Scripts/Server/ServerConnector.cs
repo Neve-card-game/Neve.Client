@@ -25,18 +25,13 @@ public class ServerConnector : MonoBehaviour
 
     public Player Loginplayer;
 
-
-
     public async Task Awake()
     {
         await connector.InitAsync();
 
         Registerbutton.onClick.AddListener(async () => await RegisterAsync());
         Loginbutton.onClick.AddListener(async () => await LoginAsync());
-
-
     }
-
 
     public async Task RegisterAsync()
     {
@@ -55,7 +50,6 @@ public class ServerConnector : MonoBehaviour
         }
         else
         {
-
             try
             {
                 affirmtext.text = "registering...";
@@ -90,7 +84,6 @@ public class ServerConnector : MonoBehaviour
         }
         else
         {
-
             try
             {
                 affirmtext.text = "logging in...";
@@ -111,13 +104,11 @@ public class ServerConnector : MonoBehaviour
         {
             string[] decklist = await connector.LoadDeckList(Loginplayer.Email);
             Loginplayer.UsingDeckId = Convert.ToInt32(decklist[0]);
-            if (decklist[1] == null)
-            {
-
-            }
+            if (decklist[1] == null) { }
             else
             {
-                Loginplayer.PlayerDecks = JsonConvert.DeserializeObject(decklist[1], typeof(List<Decks>)) as List<Decks>;
+                Loginplayer.PlayerDecks =
+                    JsonConvert.DeserializeObject(decklist[1], typeof(List<Decks>)) as List<Decks>;
             }
 
             return Loginplayer;
@@ -133,7 +124,11 @@ public class ServerConnector : MonoBehaviour
     {
         if (await connector.LoginCheck(Loginplayer.Email))
         {
-            return await connector.UpDataDeckList(player.Email, JsonConvert.SerializeObject(player.PlayerDecks), player.UsingDeckId);
+            return await connector.UpDataDeckList(
+                player.Email,
+                JsonConvert.SerializeObject(player.PlayerDecks),
+                player.UsingDeckId
+            );
         }
         else
         {
@@ -145,22 +140,44 @@ public class ServerConnector : MonoBehaviour
     {
         if (await connector.LoginCheck(emailVerified.text))
         {
-
             Loginplayer = new Player(await connector.GetPlayer(emailVerified.text));
             Loginplayer.LoginStatus = await connector.LoginCheck(Loginplayer.Email);
 
             SceneManager.LoadSceneAsync(3);
-
         }
-
     }
 
-    public async Task SendMessage(string UserName,string Message){
-        await connector.SendMessage(UserName,Message);
+    public async Task SendMessage(string UserName, string Message)
+    {
+        await connector.SendMessage(UserName, Message);
     }
 
-    public string ReceiveMessage(){
+    public string ReceiveMessage()
+    {
         return connector.ReceiveMessage();
     }
 
+    public async Task<bool> CreateRoom(string RoomName, string RoomPassword)
+    {
+        return await connector.CreateRoom(RoomName, RoomPassword);
+    }
+
+    public async Task<bool> JoinRoom(string RoomName, string RoomPassword)
+    {
+        return await connector.JoinRoom(RoomName, RoomPassword);
+    }
+
+    public async Task<bool> LeftRoom(string RoomName)
+    {
+        return await connector.LeftRoom(RoomName);
+    }
+
+    public async Task<List<Room>> GetRoomList()
+    {
+        return await connector.GetRoomList();
+    }
+
+    public async void Disconnect(){
+        await connector.DisconnectAsync();
+    }
 }
