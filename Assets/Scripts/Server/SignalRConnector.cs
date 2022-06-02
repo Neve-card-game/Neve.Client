@@ -13,6 +13,7 @@ public class SignalRConnector
         .Build();
     private string returnMessage = null;
     private bool isReceive = false;
+    private bool isRefreshRoomName = false;
 
     public async Task InitAsync()
     {
@@ -26,14 +27,27 @@ public class SignalRConnector
             }
         );
 
-        connection.On<string>("Check", (message) => { });
+        connection.On<string>(
+            "Check",
+            (message) =>
+            {
+                if (message != null)
+                {
+                    UnityEngine.Debug.Log(message);
+                    isRefreshRoomName = true;
+                }
+            }
+        );
     }
 
-    public async Task DisconnectAsync(){
-        try{
+    public async Task DisconnectAsync()
+    {
+        try
+        {
             await connection.StopAsync();
         }
-        catch (Exception ex){
+        catch (Exception ex)
+        {
             UnityEngine.Debug.Log("stop failed" + ex);
         }
     }
@@ -67,6 +81,18 @@ public class SignalRConnector
         try
         {
             await connection.InvokeAsync("Login", email, password);
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+    }
+
+    public async Task Logout(string email)
+    {
+        try
+        {
+            await connection.InvokeAsync("Logout", email);
         }
         catch (Exception ex)
         {
@@ -177,11 +203,16 @@ public class SignalRConnector
         }
     }
 
-    public async Task<bool> CreateRoom(string roomName, string roomPassword)
+    public async Task<bool> CreateRoom(string roomName, string roomPassword, string username)
     {
         try
         {
-            return await connection.InvokeAsync<bool>("CreateRoom", roomName, roomPassword);
+            return await connection.InvokeAsync<bool>(
+                "CreateRoom",
+                roomName,
+                roomPassword,
+                username
+            );
         }
         catch (Exception ex)
         {
@@ -190,11 +221,16 @@ public class SignalRConnector
         }
     }
 
-    public async Task<bool> JoinRoom(string roomName, string roomPassword)
+    public async Task<bool> JoinRoom(string roomName, string roomPassword, string username)
     {
         try
         {
-            return await connection.InvokeAsync<bool>("AddToRoom", roomName, roomPassword);
+            return await connection.InvokeAsync<bool>(
+                "AddToRoom",
+                roomName,
+                roomPassword,
+                username
+            );
         }
         catch (Exception ex)
         {
@@ -203,11 +239,11 @@ public class SignalRConnector
         }
     }
 
-    public async Task<bool> LeftRoom(string roomName)
+    public async Task<bool> LeftRoom(string roomName, string username)
     {
         try
         {
-            return await connection.InvokeAsync<bool>("RemoveFromRoom", roomName);
+            return await connection.InvokeAsync<bool>("RemoveFromRoom", roomName, username);
         }
         catch (Exception ex)
         {
@@ -229,5 +265,13 @@ public class SignalRConnector
         }
     }
 
-  
+    public bool RefreshRoomName(){
+        if(isRefreshRoomName){
+            isRefreshRoomName = false;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-
 public class DeckBuilder : MonoBehaviour
 {
     private ServerConnector decklistSl;
@@ -22,7 +21,6 @@ public class DeckBuilder : MonoBehaviour
     private VerticalLayoutGroup decklayout;
     public Button AffirmBuildButton;
 
-
     public bool IsCardListDispaly = false;
     public bool IsDeckEdit = false;
     public bool IsLayoutChange = false;
@@ -36,6 +34,7 @@ public class DeckBuilder : MonoBehaviour
         DeckEditor.DeleteOnClick += DeleteDeck;
         CardListEditor.CardOnClick += CardListDelete;
     }
+
     void OnDisable()
     {
         CardEnlage.OnClick -= OnClickHandler;
@@ -44,6 +43,7 @@ public class DeckBuilder : MonoBehaviour
         DeckEditor.DeleteOnClick -= DeleteDeck;
         CardListEditor.CardOnClick -= CardListDelete;
     }
+
     private async void Start()
     {
         decklistSl = FindObjectOfType<ServerConnector>();
@@ -62,7 +62,6 @@ public class DeckBuilder : MonoBehaviour
 
         foreach (var deck in MyDeck)
         {
-
             DeckListDisplay(deck);
         }
     }
@@ -74,6 +73,7 @@ public class DeckBuilder : MonoBehaviour
             deck.IsDeckOnClick = false;
         }
     }
+
     void IsRepeatName(string DeckName)
     {
         bool i = true;
@@ -91,6 +91,7 @@ public class DeckBuilder : MonoBehaviour
             IsDeckRepeatName = false;
         }
     }
+
     void IsRepeatNameInDeckList()
     {
         int counts = MyDeck.Count;
@@ -106,7 +107,6 @@ public class DeckBuilder : MonoBehaviour
                         counts = MyDeck.Count;
                         i--;
                         break;
-
                     }
                     else
                     {
@@ -118,8 +118,8 @@ public class DeckBuilder : MonoBehaviour
                 }
             }
         }
-
     }
+
     void DeckListDisplay(Decks MyDeck)
     {
         try
@@ -130,23 +130,42 @@ public class DeckBuilder : MonoBehaviour
             {
                 if (MyDeck.DeckColor == "红")
                 {
-                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(200 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
+                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                        200 / 255f,
+                        35 / 255f,
+                        35 / 255f,
+                        100 / 255f
+                    );
                 }
                 else if (MyDeck.DeckColor == "蓝")
                 {
-                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 156 / 255f, 100 / 255f);
+                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                        35 / 255f,
+                        35 / 255f,
+                        156 / 255f,
+                        100 / 255f
+                    );
                 }
             }
             else
             {
                 if (MyDeck.DeckColor == "红")
                 {
-                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(255 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
-
+                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                        255 / 255f,
+                        35 / 255f,
+                        35 / 255f,
+                        100 / 255f
+                    );
                 }
                 else if (MyDeck.DeckColor == "蓝")
                 {
-                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 255 / 255f, 100 / 255f);
+                    Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                        35 / 255f,
+                        35 / 255f,
+                        255 / 255f,
+                        100 / 255f
+                    );
                 }
             }
             Deck.name = MyDeck.DeckName;
@@ -165,23 +184,42 @@ public class DeckBuilder : MonoBehaviour
         {
             if (MyDeck.DeckColor == "红")
             {
-                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(200 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
+                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                    200 / 255f,
+                    35 / 255f,
+                    35 / 255f,
+                    100 / 255f
+                );
             }
             else if (MyDeck.DeckColor == "蓝")
             {
-                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 156 / 255f, 100 / 255f);
+                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                    35 / 255f,
+                    35 / 255f,
+                    156 / 255f,
+                    100 / 255f
+                );
             }
         }
         else
         {
             if (MyDeck.DeckColor == "红")
             {
-                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(255 / 255f, 35 / 255f, 35 / 255f, 100 / 255f);
-
+                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                    255 / 255f,
+                    35 / 255f,
+                    35 / 255f,
+                    100 / 255f
+                );
             }
             else if (MyDeck.DeckColor == "蓝")
             {
-                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(35 / 255f, 35 / 255f, 255 / 255f, 100 / 255f);
+                Deck.transform.Find("Image").gameObject.GetComponent<Image>().color = new Color(
+                    35 / 255f,
+                    35 / 255f,
+                    255 / 255f,
+                    100 / 255f
+                );
             }
         }
     }
@@ -217,7 +255,6 @@ public class DeckBuilder : MonoBehaviour
                     break;
                 }
             }
-
         }
     }
 
@@ -251,7 +288,6 @@ public class DeckBuilder : MonoBehaviour
         {
             foreach (var card in MyDeck.Deck)
             {
-
                 GameObject cardindeck = Instantiate(CardList);
                 cardindeck.transform.SetParent(DeckList_Layout.transform, true);
                 cardindeck.name = card.Id;
@@ -273,8 +309,14 @@ public class DeckBuilder : MonoBehaviour
     {
         if (IsDeckEdit == false)
         {
-            string DeckName = GameObject.FindGameObjectWithTag("DeckName").GetComponent<Text>().text;
-            string DeckColor = GameObject.FindGameObjectWithTag("DeckColor").GetComponent<Text>().text;
+            string DeckName = GameObject
+                .FindGameObjectWithTag("DeckName")
+                .GetComponent<Text>()
+                .text;
+            string DeckColor = GameObject
+                .FindGameObjectWithTag("DeckColor")
+                .GetComponent<Text>()
+                .text;
 
             IsRepeatName(DeckName);
 
@@ -293,7 +335,6 @@ public class DeckBuilder : MonoBehaviour
             {
                 Debug.Log("生成卡组失败");
             }
-
         }
     }
 
@@ -316,7 +357,15 @@ public class DeckBuilder : MonoBehaviour
         if (IsDeckEdit == true)
         {
             CardListHide(CurrentEditDeck);
-            Decks decks = new Decks(CurrentEditDeck.DeckName, CurrentEditDeck.DeckId, CurrentEditDeck.DeckColor, CurrentEditDeck.Deck, CurrentEditDeck.CardsConuts, CurrentEditDeck.IsDeckOnClick, CurrentEditDeck.EditTime);
+            Decks decks = new Decks(
+                CurrentEditDeck.DeckName,
+                CurrentEditDeck.DeckId,
+                CurrentEditDeck.DeckColor,
+                CurrentEditDeck.Deck,
+                CurrentEditDeck.CardsConuts,
+                CurrentEditDeck.IsDeckOnClick,
+                CurrentEditDeck.EditTime
+            );
             MyDeck.Add(decks);
             IsRepeatNameInDeckList();
             decklistSl.Loginplayer.PlayerDecks = MyDeck;
@@ -343,11 +392,18 @@ public class DeckBuilder : MonoBehaviour
             {
                 if (card.Id == eventData.pointerClick.name)
                 {
-                    Debug.Log(card.CardName);
-                    CurrentEditDeck.Deck.Add(card);
-                    CardListHide(CurrentEditDeck);
-                    CardListDisplay(CurrentEditDeck);
-                    break;
+                    Debug.Log(card.CardName + card.CardColor);
+                    if (card.CardColor == CurrentEditDeck.DeckColor)
+                    {
+                        CurrentEditDeck.Deck.Add(card);
+                        CardListHide(CurrentEditDeck);
+                        CardListDisplay(CurrentEditDeck);
+                        break;
+                    }
+                    else
+                    {
+                        Debug.Log("卡牌必须和卡组同色！");
+                    }
                 }
             }
         }
@@ -355,13 +411,10 @@ public class DeckBuilder : MonoBehaviour
 
     void DeckOnClickHandler(PointerEventData eventData)
     {
-
         foreach (var deck in MyDeck)
         {
             if (deck.DeckName == eventData.pointerClick.name)
             {
-
-
                 if (deck.IsDeckOnClick == false)
                 {
                     deck.IsDeckOnClick = true;
@@ -385,8 +438,6 @@ public class DeckBuilder : MonoBehaviour
                     ThisDeck.GetComponent<Animator>().SetBool("deckdisplay", false);
                     ThisDeck.GetComponent<Animator>().SetBool("deckhide", true);
 
-
-
                     if (IsLayoutChange == true)
                     {
                         //decklayout.spacing = new Vector2(decklayout.spacing.x, decklayout.spacing.y - 56f);
@@ -395,10 +446,7 @@ public class DeckBuilder : MonoBehaviour
 
                     break;
                 }
-
             }
         }
-
     }
-
 }

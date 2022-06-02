@@ -8,9 +8,10 @@ using Newtonsoft.Json;
 
 public class ServerConnector : MonoBehaviour
 {
+    public string JoinRoomName;
+    public string EnemyPlayerName = null;
     public Button Registerbutton;
     public Button Loginbutton;
-
     private SignalRConnector connector = new SignalRConnector();
     public InputField email;
     public InputField password;
@@ -20,9 +21,6 @@ public class ServerConnector : MonoBehaviour
     public Text affirmtext;
     public Text Username;
     public Text LoginStatus;
-    public GameObject loginpanel;
-    public GameObject mainpanel;
-
     public Player Loginplayer;
 
     public async Task Awake()
@@ -81,6 +79,10 @@ public class ServerConnector : MonoBehaviour
         else if (!await connector.PasswordCheck(emailVerified.text, passwordVerified.text))
         {
             affirmtext.text = "password is incorrect";
+        }
+        else if (await connector.LoginCheck(emailVerified.text))
+        {
+            affirmtext.text = "Already login!";
         }
         else
         {
@@ -159,17 +161,35 @@ public class ServerConnector : MonoBehaviour
 
     public async Task<bool> CreateRoom(string RoomName, string RoomPassword)
     {
-        return await connector.CreateRoom(RoomName, RoomPassword);
+        if (JoinRoomName == null || JoinRoomName.Length == 0)
+        {
+            JoinRoomName = RoomName;
+            return await connector.CreateRoom(RoomName, RoomPassword, Loginplayer.Username);
+        }
+        else
+        {
+            UnityEngine.Debug.Log(JoinRoomName + ":" + Loginplayer.Username);
+            return false;
+        }
     }
 
     public async Task<bool> JoinRoom(string RoomName, string RoomPassword)
     {
-        return await connector.JoinRoom(RoomName, RoomPassword);
+        if (JoinRoomName == null || JoinRoomName.Length == 0)
+        {
+            JoinRoomName = RoomName;
+            return await connector.JoinRoom(RoomName, RoomPassword, Loginplayer.Username);
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public async Task<bool> LeftRoom(string RoomName)
+    public async void LeftRoom()
     {
-        return await connector.LeftRoom(RoomName);
+        await connector.LeftRoom(JoinRoomName, Loginplayer.Username);
+        JoinRoomName = null;
     }
 
     public async Task<List<Room>> GetRoomList()
@@ -177,7 +197,54 @@ public class ServerConnector : MonoBehaviour
         return await connector.GetRoomList();
     }
 
-    public async void Disconnect(){
+    public bool RefreshRoomPlayerName()
+    {
+        if (JoinRoomName.Length > 0 && connector.RefreshRoomName())
+        {
+            RefreshName();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public async void RefreshName()
+    {
+        List<Room> RoomList = await GetRoomList();
+        foreach (var room in RoomList)
+        {
+            if (room.RoomName == JoinRoomName)
+            {
+                if (room.RoomNumberOfPeople == 1)
+                {
+                    EnemyPlayerName = null;
+                    break;
+                }
+                else
+                {
+                    foreach (var PlayerName in room.RoomMemberList)
+                    {
+                        if (PlayerName != Loginplayer.Username)
+                        {
+                            EnemyPlayerName = PlayerName;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    public async void Disconnect()
+    {
+        try
+        {
+            await connector.Logout(Loginplayer.Email);
+        }
+        catch { }
         await connector.DisconnectAsync();
     }
 }

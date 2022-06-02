@@ -1662,7 +1662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00008964515, y: -56.717026}
+  m_AnchoredPosition: {x: -0.00015068, y: -1.808}
   m_SizeDelta: {x: 652.364, y: 278.3839}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645434283
@@ -2023,6 +2023,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a33dcdf24ea4b46aa86cc80b75a0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JoinRoomName: 
+  EnemyPlayerName: 
   Registerbutton: {fileID: 1002248769}
   Loginbutton: {fileID: 1388996409}
   email: {fileID: 1362778382}
@@ -2033,8 +2035,6 @@ MonoBehaviour:
   affirmtext: {fileID: 1024384926}
   Username: {fileID: 0}
   LoginStatus: {fileID: 0}
-  loginpanel: {fileID: 1087311012}
-  mainpanel: {fileID: 0}
   Loginplayer:
     PlayerDecks: []
 --- !u!114 &680146653
@@ -6178,7 +6178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000038965, y: -56.717}
+  m_AnchoredPosition: {x: 0.00002207, y: 41}
   m_SizeDelta: {x: 992.8104, y: 556.5671}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1680812681
@@ -7252,7 +7252,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000038965, y: -56.717}
+  m_AnchoredPosition: {x: -0.0001, y: 41}
   m_SizeDelta: {x: 992.8104, y: 556.5671}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2113009079

@@ -1,18 +1,16 @@
-using System;
-using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RoomListManager : MonoBehaviour
 {
     private ServerConnector connector;
 
     private string RoomName_Join = null;
-
     public TextMeshProUGUI RoomMessage;
     public Button CreateRoomButton;
     public Button JoinRoomButton;
@@ -26,6 +24,7 @@ public class RoomListManager : MonoBehaviour
 
     public GameObject RoomList;
     public GameObject RoomPrefab;
+    public RectTransform canvas;
 
     private void OnEnable()
     {
@@ -40,16 +39,18 @@ public class RoomListManager : MonoBehaviour
     private async void Awake()
     {
         connector = FindObjectOfType<ServerConnector>();
+
         RefreshRoomList(await connector.GetRoomList());
 
-        RefreshRoomListButton.onClick.AddListener(async ()=> RefreshRoomList(await connector.GetRoomList()));
+        RefreshRoomListButton.onClick.AddListener(
+            async () => RefreshRoomList(await connector.GetRoomList())
+        );
 
         CreateRoomButton.onClick.AddListener(CreateRoom);
 
         JoinRoomButton.onClick.AddListener(JoinRoom);
 
         SearchRoomButton.onClick.AddListener(SearchRoom);
-
     }
 
     private void RefreshRoomList(List<Room> roomList)
@@ -62,6 +63,7 @@ public class RoomListManager : MonoBehaviour
             {
                 GameObject Rooms = Instantiate(RoomPrefab);
                 Rooms.name = room.RoomName;
+                Rooms.transform.localScale = canvas.localScale;
                 Rooms.transform.Find("RoomId").GetComponent<TextMeshProUGUI>().text = room.RoomId;
                 Rooms.transform.Find("RoomName").GetComponent<TextMeshProUGUI>().text =
                     room.RoomName;
@@ -91,6 +93,7 @@ public class RoomListManager : MonoBehaviour
         if (await connector.CreateRoom(RoomName_Create.text, RoomPassword_Create.text))
         {
             RoomMessage.text = "建房成功";
+            SceneManager.LoadSceneAsync(1);
         }
         else
         {
@@ -108,14 +111,22 @@ public class RoomListManager : MonoBehaviour
         }
         else
         {
-            RoomMessage.text = "尝试加入房间...";
-            if (await connector.JoinRoom(RoomName_Join, RoomPassword_Join.text))
+            if (!await CheckRoomMembers())
             {
-                RoomMessage.text = "加入房间成功";
+                RoomMessage.text = "尝试加入房间...";
+                if (await connector.JoinRoom(RoomName_Join, RoomPassword_Join.text))
+                {
+                    RoomMessage.text = "加入房间成功";
+                    SceneManager.LoadSceneAsync(1);
+                }
+                else
+                {
+                    RoomMessage.text = "加入失败";
+                }
             }
             else
             {
-                RoomMessage.text = "加入失败";
+                RoomMessage.text = "房间已满";
             }
         }
         RoomPassword_Join.text = null;
@@ -132,15 +143,40 @@ public class RoomListManager : MonoBehaviour
         RoomName_Join = eventData.pointerClick.name;
     }
 
-    private async void SearchRoom(){
+    private async void SearchRoom()
+    {
         List<Room> roomList = await connector.GetRoomList();
         List<Room> searchRoom = new List<Room>();
-        foreach(var room in roomList){
-            if(room.RoomId.Contains(RoomName_Search.text)||room.RoomName.Contains(RoomName_Search.text)){
+        foreach (var room in roomList)
+        {
+            if (
+                room.RoomId.Contains(RoomName_Search.text)
+                || room.RoomName.Contains(RoomName_Search.text)
+            )
+            {
                 searchRoom.Add(room);
             }
         }
         RefreshRoomList(searchRoom);
     }
 
+    private async Task<bool> CheckRoomMembers()
+    {
+        bool IsFullRoom = false;
+        List<Room> RoomList = await connector.GetRoomList();
+        foreach (var room in RoomList)
+        {
+            if (room.RoomName == RoomName_Join)
+            {
+                if (room.RoomNumberOfPeople >= 2)
+                    IsFullRoom = true;
+                else
+                {
+                    IsFullRoom = false;
+                }
+                break;
+            }
+        }
+        return IsFullRoom;
+    }
 }

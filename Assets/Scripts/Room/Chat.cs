@@ -14,6 +14,7 @@ public class Chat : MonoBehaviour
     public ServerConnector connection;
     public Button SendButton;
     public GameObject ChatArea;
+    public RectTransform canvas;
 
     private int n = 0;
 
@@ -63,6 +64,7 @@ public class Chat : MonoBehaviour
             );
             GameObject message = Instantiate(ChatMessagePrefab);
             message.name = "message" + n;
+            message.transform.localScale = canvas.localScale;
             message.GetComponentInChildren<TextMeshProUGUI>().text = Message;
             message.transform.SetParent(ChatList.transform);
 

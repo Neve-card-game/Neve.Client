@@ -3,13 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CardDataBase : MonoBehaviour
 {
     public TextAsset cardData;
     public List<Card> cardList = new List<Card>();
     public Sprite[] CardFace;
-    public GameObject cardPrefeb;
+    public GameObject cardPrefab;
+    public GameObject showArea;
+
+    public Button SearchButton;
+
+    public TMP_InputField SearchInfo;
 
     private void Start()
     {
@@ -17,7 +23,9 @@ public class CardDataBase : MonoBehaviour
         CardFace = LoadCardFace();
         cardList = LoadCardData();
 
-        CardDeal();
+        CardCollectionDisplay(cardList);
+
+        SearchButton.onClick.AddListener(RefreshCollection);
     }
 
     public List<Card> LoadCardData()
@@ -87,17 +95,30 @@ public class CardDataBase : MonoBehaviour
 
     }
 
-    void CardDeal()
+    void CardCollectionDisplay(List<Card> cardList)
     {
         foreach (Card card in cardList)
         {
-            GameObject newCard = Instantiate(cardPrefeb);
-            newCard.transform.SetParent(GameObject.FindGameObjectWithTag("showArea").transform);
+            GameObject newCard = Instantiate(cardPrefab);
+            newCard.transform.SetParent(showArea.transform);
             newCard.name = card.Id;
         }
     }
 
+    private void CardSearch(){
+        string _searchInfo = SearchInfo.text;
+        List<Card> SearchCardList = new List<Card>();
+        foreach (Card card in cardList){
+            if(card.CardName.Contains(_searchInfo)||card.CardType.Contains(_searchInfo)||card.Id.Contains(_searchInfo)||card.CardColor.Contains(_searchInfo)||card.CardDescription.Contains(_searchInfo)){
+                SearchCardList.Add(card);
+            }
+        }
+        CardCollectionDisplay(SearchCardList);
+    }
 
-
+    private void RefreshCollection(){
+        showArea.transform.DestroyChildren();
+        CardSearch();
+    }
 
 }

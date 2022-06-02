@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 [System.Serializable]
 /// <summary>
@@ -24,6 +25,12 @@ public class Room
     /// </summary>
     /// <value></value>
     public string? RoomPassword { get; set; }
+
+    /// <summary>
+    /// 房间玩家列表
+    /// </summary>
+    /// <value></value>
+    public List<string> RoomMemberList { get; set; }
 
     /// <summary>
     /// 房间人数
@@ -54,10 +61,13 @@ public class Room
     {
         RoomId = id;
         RoomPassword = password;
+        RoomMemberList = new List<string>();
         RoomNumberOfPeople = NumberOfPeople;
         CreatedTime = createdTime;
         Status = status;
     }
 
-    public Room() { }
+    public Room() {
+        RoomMemberList = new List<string>();
+     }
 }
