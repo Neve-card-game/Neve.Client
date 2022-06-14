@@ -1,9 +1,20 @@
 {
     "cSpell.words": [
+        "affirmtext",
+        "Beizer",
+        "Bezier",
+        "cardindeck",
+        "cardname",
+        "cardsofhand",
+        "deckdisplay",
+        "deckhide",
         "deckid",
+        "decklayout",
         "decklist",
+        "Lerp",
         "Loginplayer",
         "Newtonsoft",
+        "Raycasts",
         "Receivemessage",
         "sendmessage",
         "UGUI"

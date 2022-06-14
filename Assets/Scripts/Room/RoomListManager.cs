@@ -24,6 +24,7 @@ public class RoomListManager : MonoBehaviour
 
     public GameObject RoomList;
     public GameObject RoomPrefab;
+    public GameObject LoadScene;
     public RectTransform canvas;
 
     private void OnEnable()
@@ -93,7 +94,7 @@ public class RoomListManager : MonoBehaviour
         if (await connector.CreateRoom(RoomName_Create.text, RoomPassword_Create.text))
         {
             RoomMessage.text = "建房成功";
-            SceneManager.LoadSceneAsync(1);
+            LoadScene.GetComponent<LoadScenes>().Load(1);
         }
         else
         {
@@ -117,11 +118,11 @@ public class RoomListManager : MonoBehaviour
                 if (await connector.JoinRoom(RoomName_Join, RoomPassword_Join.text))
                 {
                     RoomMessage.text = "加入房间成功";
-                    SceneManager.LoadSceneAsync(1);
+                    LoadScene.GetComponent<LoadScenes>().Load(1);
                 }
                 else
                 {
-                    RoomMessage.text = "加入失败";
+                    RoomMessage.text = "密码错误";
                 }
             }
             else

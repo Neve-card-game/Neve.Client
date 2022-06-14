@@ -8,8 +8,10 @@ using Newtonsoft.Json;
 
 public class ServerConnector : MonoBehaviour
 {
+    public MatchManager matchManager;
     public string JoinRoomName;
     public string EnemyPlayerName = null;
+    public List<Card> MixDeck = new List<Card>();
     public Button Registerbutton;
     public Button Loginbutton;
     private SignalRConnector connector = new SignalRConnector();
@@ -22,6 +24,24 @@ public class ServerConnector : MonoBehaviour
     public Text Username;
     public Text LoginStatus;
     public Player Loginplayer;
+
+    public GameState Match;
+
+    private void OnEnable()
+    {
+        SignalRConnector.MatchStateChange += MatchStateChange;
+        SignalRConnector.MainDeckChange += MainDeckChange;
+        MatchManager.OnDrawCard += SendDrawCard;
+        CardPlay.CardMoveToBF += SendCardState;
+    }
+
+    private void OnDisable()
+    {
+        SignalRConnector.MatchStateChange -= MatchStateChange;
+        SignalRConnector.MainDeckChange -= MainDeckChange;
+        MatchManager.OnDrawCard -= SendDrawCard;
+        CardPlay.CardMoveToBF -= SendCardState;
+    }
 
     public async Task Awake()
     {
@@ -246,5 +266,63 @@ public class ServerConnector : MonoBehaviour
         }
         catch { }
         await connector.DisconnectAsync();
+    }
+
+    //
+    public async void StartMatch()
+    {
+        Match = GameState.Match_Start;
+        if (JoinRoomName != null)
+            await connector.StartMatch(JoinRoomName, Match);
+    }
+
+    public async void PreMatch()
+    {
+        await LoadDeckList();
+        if (JoinRoomName != null)
+        {
+            Debug.Log(Loginplayer.PlayerDecks[0].DeckName);
+            await connector.PreMatch(JoinRoomName, Loginplayer.PlayerDecks[0].Deck, Match);
+        }
+    }
+
+    //
+    private void MatchStateChange(GameState match)
+    {
+        Match = match;
+    }
+
+    private void MainDeckChange(List<Card> deck)
+    {
+        if (deck != null)
+        {
+            Debug.Log("更新成功");
+            MixDeck = deck;
+        }
+        else
+        {
+            Debug.Log("返回Null值");
+        }
+    }
+
+    private async void SendDrawCard(string name)
+    {
+        if (JoinRoomName != null)
+            await connector.SendDrawCard(JoinRoomName, name);
+    }
+
+    private async void SendCardState(string name, CardState cardState)
+    {
+        if (JoinRoomName != null)
+            await connector.SendCardState(JoinRoomName, name,cardState);
+    }
+
+    //
+    public async void RefreshMainDeck()
+    {
+        if (Match > 0 && JoinRoomName != null)
+        {
+            await connector.RefreshMainDeck(JoinRoomName, MixDeck);
+        }
     }
 }

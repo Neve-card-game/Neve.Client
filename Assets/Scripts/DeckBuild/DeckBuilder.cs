@@ -21,14 +21,14 @@ public class DeckBuilder : MonoBehaviour
     private VerticalLayoutGroup decklayout;
     public Button AffirmBuildButton;
 
-    public bool IsCardListDispaly = false;
+    public bool IsCardListDisplay = false;
     public bool IsDeckEdit = false;
     public bool IsLayoutChange = false;
     public bool IsDeckRepeatName = false;
 
     void OnEnable()
     {
-        CardEnlage.OnClick += OnClickHandler;
+        UICardEnlarge.OnClick += OnClickHandler;
         DeckEditor.DeckOnClick += DeckOnClickHandler;
         DeckEditor.EditOnClick += DeckEdit;
         DeckEditor.DeleteOnClick += DeleteDeck;
@@ -37,7 +37,7 @@ public class DeckBuilder : MonoBehaviour
 
     void OnDisable()
     {
-        CardEnlage.OnClick -= OnClickHandler;
+        UICardEnlarge.OnClick -= OnClickHandler;
         DeckEditor.DeckOnClick -= DeckOnClickHandler;
         DeckEditor.EditOnClick -= DeckEdit;
         DeckEditor.DeleteOnClick -= DeleteDeck;
@@ -284,7 +284,7 @@ public class DeckBuilder : MonoBehaviour
     {
         GameObject.FindGameObjectWithTag("DeckTitle").GetComponent<Text>().text = MyDeck.DeckName;
 
-        if (IsCardListDispaly == false)
+        if (IsCardListDisplay == false)
         {
             foreach (var card in MyDeck.Deck)
             {
@@ -293,7 +293,7 @@ public class DeckBuilder : MonoBehaviour
                 cardindeck.name = card.Id;
                 cardindeck.GetComponentInChildren<Text>().text = card.CardName;
             }
-            IsCardListDispaly = true;
+            IsCardListDisplay = true;
         }
     }
 
@@ -302,7 +302,7 @@ public class DeckBuilder : MonoBehaviour
         DeckList_Layout.transform.DestroyChildren();
         GameObject.FindGameObjectWithTag("DeckTitle").GetComponent<Text>().text = "你的卡组";
 
-        IsCardListDispaly = false;
+        IsCardListDisplay = false;
     }
 
     public void BuildDeck()
@@ -362,7 +362,6 @@ public class DeckBuilder : MonoBehaviour
                 CurrentEditDeck.DeckId,
                 CurrentEditDeck.DeckColor,
                 CurrentEditDeck.Deck,
-                CurrentEditDeck.CardsConuts,
                 CurrentEditDeck.IsDeckOnClick,
                 CurrentEditDeck.EditTime
             );

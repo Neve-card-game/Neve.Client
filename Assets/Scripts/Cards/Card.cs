@@ -1,14 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-[System.Serializable]
-
+﻿[System.Serializable]
 public class Card
 {
-
     public int BluePoint;
     public int RedPoint;
-    public int ChangeBluePoint;
-    public int ChangeRedPoint;
     public string Id;
     public string CardName;
     public string CardColor;
@@ -16,11 +10,18 @@ public class Card
     public string CardType;
     public string CardDescription;
 
-    public bool IsInStack = false;
-    public bool IsTop = false;
-    public bool IsButtom = false;
+    public Card() { }
 
-    public Card(string id, string cardName, string cardColor, string cardType, string cardRarity, int bluePoint, int redPoint, string cardDescription)
+    public Card(
+        string id,
+        string cardName,
+        string cardColor,
+        string cardType,
+        string cardRarity,
+        int bluePoint,
+        int redPoint,
+        string cardDescription
+    )
     {
         Id = id;
         CardName = cardName;
@@ -30,7 +31,5 @@ public class Card
         BluePoint = bluePoint;
         RedPoint = redPoint;
         CardDescription = cardDescription;
-        ChangeBluePoint = BluePoint;
-        ChangeRedPoint = RedPoint;
     }
 }

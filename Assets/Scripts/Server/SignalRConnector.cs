@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class SignalRConnector
 {
@@ -14,6 +15,18 @@ public class SignalRConnector
     private string returnMessage = null;
     private bool isReceive = false;
     private bool isRefreshRoomName = false;
+
+    public delegate void MatchStateBroadCast(GameState Match);
+    public static event MatchStateBroadCast MatchStateChange;
+
+     public delegate void MainDeckBroadCast(List<Card> deck);
+    public static event MainDeckBroadCast MainDeckChange;
+
+    public delegate void DrawCardBroadCast(string cardName);
+    public static event DrawCardBroadCast OnDrawCard;
+
+    public delegate void CardStateChange(string cardName,CardState cardState);
+    public static event CardStateChange CardStateUpdate;
 
     public async Task InitAsync()
     {
@@ -36,6 +49,39 @@ public class SignalRConnector
                     UnityEngine.Debug.Log(message);
                     isRefreshRoomName = true;
                 }
+            }
+        );
+
+        connection.On<GameState>(
+            "GameStateCheck",
+            (Match) =>
+            {
+                Debug.Log("游戏阶段改变" + Convert.ToString(Match));
+                MatchStateChange(Match);
+            }
+        );
+
+        connection.On<string>(
+            "GetDeck",
+            (MainDeck) =>
+            {
+               // Debug.Log("牌库更新");
+                MainDeckChange(
+                    JsonConvert.DeserializeObject(MainDeck, typeof(List<Card>)) as List<Card>
+                );
+            }
+        );
+
+        connection.On<string>(
+            "DrawCard",(cardName)=>{
+               // Debug.Log("敌方抽牌:"+cardName);
+                OnDrawCard(cardName);
+            });
+
+        connection.On<string,CardState>(
+            "CardStateUpdate",(cardName,cardState)=>{
+                Debug.Log(cardName+"改变:"+cardState.ToString());
+                CardStateUpdate(cardName,cardState);
             }
         );
     }
@@ -265,13 +311,78 @@ public class SignalRConnector
         }
     }
 
-    public bool RefreshRoomName(){
-        if(isRefreshRoomName){
+    public bool RefreshRoomName()
+    {
+        if (isRefreshRoomName)
+        {
             isRefreshRoomName = false;
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
+
+    public async Task StartMatch(string roomName, GameState Match)
+    {
+        try
+        {
+            await connection.InvokeAsync("StartMatch", roomName, Match);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
+    public async Task PreMatch(string roomName, List<Card> deck, GameState Match)
+    {
+        try
+        {
+            string Deck = JsonConvert.SerializeObject(deck);
+            await connection.InvokeAsync("PreMatch", roomName, Deck, Match);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
+    public async Task SendDrawCard(string roomName,string cardName){
+        try
+        {
+            await connection.InvokeAsync("DrawCard", roomName,cardName);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
+    public async Task SendCardState(string roomName,string cardName,CardState cardState){
+        try
+        {
+            await connection.InvokeAsync("CardStateUpdate", roomName,cardName,cardState);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
+    //
+    public async Task RefreshMainDeck(string roomName, List<Card> Deck)
+    {
+        try
+        {
+            string deck = JsonConvert.SerializeObject(Deck);
+            await connection.InvokeAsync("RefreshMainDeck", roomName, deck);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+    }
+
 }

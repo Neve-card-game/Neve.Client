@@ -6,18 +6,18 @@ using UnityEngine.EventSystems;
 using System;
 public class CardDetail : MonoBehaviour
 {
-    private GameObject EnlageCard;
+    private GameObject EnlargeCard;
     private CardDataBase cardDatabase;
 
 
     void OnEnable()
     {
-        CardEnlage.OnClick += OnClickHandler;
+        UICardEnlarge.OnClick += OnClickHandler;
     }
 
     void OnDisable()
     {
-        CardEnlage.OnClick -= OnClickHandler;
+        UICardEnlarge.OnClick -= OnClickHandler;
     }
 
 
@@ -26,13 +26,13 @@ public class CardDetail : MonoBehaviour
         cardDatabase = FindObjectOfType<CardDataBase>();
         List<Card> cardList = cardDatabase.LoadCardData();
 
-        EnlageCard = eventData.pointerClick;
-        GameObject.Find("ImagePosition").GetComponent<Image>().sprite = EnlageCard.GetComponent<Image>().sprite;
+        EnlargeCard = eventData.pointerClick;
+        GameObject.Find("ImagePosition").GetComponent<Image>().sprite = EnlargeCard.GetComponent<Image>().sprite;
         GameObject.Find("ImagePosition").GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
 
         foreach (Card card in cardList)
         {
-            if (card.Id == EnlageCard.name)
+            if (card.Id == EnlargeCard.name)
             {
                 this.GetComponentInChildren<Text>().text = card.CardName;
                 GameObject.FindGameObjectWithTag("detail").GetComponent<Text>().text = "卡牌ID：" + card.Id + "\n" + "卡牌颜色：" + card.CardColor + "\n" + "卡牌类型：" + card.CardType + "\n" + "稀有度：" + card.CardRarity + "\n" + "BP/RP：" + card.BluePoint + "/" + card.RedPoint + "\n" + card.CardDescription;

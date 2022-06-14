@@ -10,36 +10,37 @@ public class CardDisplay : MonoBehaviour
     public Sprite cardBack;
 
     private Image cardImage;
+
     //private Selectable selectable;
     private CardDataBase cardDatabase;
 
-
-
     void Start()
     {
-
-        cardDatabase = FindObjectOfType<CardDataBase>();
-        List<Card> cardList = cardDatabase.LoadCardData();
-
-        int i = 0;
-
-        foreach (Card card in cardList)
+        try
         {
-            if (this.name == card.Id)
-            {
-                cardFace = cardDatabase.CardFace[i];
+            cardDatabase = FindObjectOfType<CardDataBase>();
+            List<Card> cardList = cardDatabase.LoadCardData();
 
-                break;
+            int i = 0;
+
+            foreach (Card card in cardList)
+            {
+                if (this.name == card.Id)
+                {
+                    cardFace = cardDatabase.CardFace[i];
+
+                    break;
+                }
+                i++;
             }
-            i++;
+            cardImage = GetComponent<Image>();
+            cardImage.sprite = cardFace;
         }
-        cardImage = GetComponent<Image>();
+        catch { }
     }
 
     void Update()
     {
-        cardImage.sprite = cardFace;
+        
     }
-
-
 }

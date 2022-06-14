@@ -3084,7 +3084,6 @@ GameObject:
   - component: {fileID: 477829546}
   - component: {fileID: 477829545}
   - component: {fileID: 477829544}
-  - component: {fileID: 477829543}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3092,21 +3091,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &477829543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477829542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 634a750789f1245429cc50f556cc433a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button_BackMenu: {fileID: 1622484314}
-  transition: {fileID: 415492487}
-  transitionTime: 1
 --- !u!114 &477829544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8021,13 +8005,13 @@ MonoBehaviour:
     DeckId: 
     DeckColor: 
     Deck: []
-    CardsConuts: 0
+    CardsCounts: 0
     IsDeckOnClick: 0
     EditTime: 0
   Decks: {fileID: 5961230303961958714, guid: f6a95410d4cb7174ab9cd1bd14d6c2ec, type: 3}
   CardList: {fileID: 5018384368651501547, guid: a466a385cbf952345b4177be65a2c76d, type: 3}
   AffirmBuildButton: {fileID: 0}
-  IsCardListDispaly: 0
+  IsCardListDisplay: 0
   IsDeckEdit: 0
   IsLayoutChange: 0
   IsDeckRepeatName: 0
@@ -8096,13 +8080,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1622484318}
-        m_TargetAssemblyTypeName: StartButton, Assembly-CSharp
-        m_MethodName: BackToMainMenu
-        m_Mode: 1
+        m_TargetAssemblyTypeName: LoadScenes, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8175,13 +8159,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1622484313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edecb7c12406ada4baa599ec779122b1, type: 3}
+  m_Script: {fileID: 11500000, guid: de249add52661984fb6010c7f4361340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button_CardCollection: {fileID: 0}
-  button_MatchUp: {fileID: 0}
   transition: {fileID: 415492487}
   transitionTime: 1
+  SceneIndex: 3
 --- !u!1 &1638031602
 GameObject:
   m_ObjectHideFlags: 0

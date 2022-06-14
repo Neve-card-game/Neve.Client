@@ -1,24 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-[System.Serializable]
 
+[System.Serializable]
 public class Decks
 {
     public string DeckName;
     public string DeckId;
     public string DeckColor;
     public List<Card> Deck;
-    public int CardsConuts;
+    public int CardsCounts;
 
     public bool IsDeckOnClick = false;
     public int EditTime = 0;
 
     public Decks() { }
+
     public Decks(string deckName, string deckColor)
     {
         DeckName = deckName;
         DeckColor = deckColor;
     }
+
     public Decks(string deckName, string deckId, string deckColor)
     {
         DeckName = deckName;
@@ -26,18 +28,19 @@ public class Decks
         DeckColor = deckColor;
     }
 
-    public Decks(string deckName, string deckId, string deckColor, List<Card> deck, int cardsConuts, bool isDeckOnClick, int editTime) : this(deckName, deckId, deckColor)
+    public Decks(
+        string deckName,
+        string deckId,
+        string deckColor,
+        List<Card> deck,
+        bool isDeckOnClick,
+        int editTime
+    ) : this(deckName, deckId, deckColor)
     {
         Deck = deck;
-        CardsConuts = cardsConuts;
+        CardsCounts = deck.Count;
         IsDeckOnClick = isDeckOnClick;
         EditTime = editTime;
-    }
-
-    public int GetCardsConuts()
-    {
-        this.CardsConuts = this.Deck.Count;
-        return this.CardsConuts;
     }
 
     public void DecksClear()
@@ -45,13 +48,11 @@ public class Decks
         DeckName = null;
         DeckId = null;
         DeckColor = null;
-        Deck.Clear();
-        CardsConuts = 0;
+        if (Deck != null)
+            Deck.Clear();
+        CardsCounts = 0;
         EditTime = 0;
 
         IsDeckOnClick = false;
     }
 }
-
-
-
